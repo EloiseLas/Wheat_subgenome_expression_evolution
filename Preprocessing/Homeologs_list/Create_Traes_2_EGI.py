@@ -1,0 +1,26 @@
+import pandas as pd
+
+ref_seq_EGI = pd.read_csv("Data/RefseqID_2_EGI.txt", sep="\t", header=None, names=["RefSeqID","EGI"])
+ref_seq_EGI=ref_seq_EGI.astype({"EGI": 'str'})
+LOC_EGI = pd.read_csv("Data/Tae-r_SpeciesSpecific2EGI", sep="\t", header=None, names=["EGI_LOC","EGI"])
+LOC_EGI=LOC_EGI.astype({"EGI": 'str'})
+ref_seq_EGI=ref_seq_EGI.merge(LOC_EGI, on=["EGI"], how='inner')
+#ref_seq_EGI["EGI_LOC"]=ref_seq_EGI.apply(lambda row : "LOC"+row["EGI"], axis = 1)
+print(ref_seq_EGI)
+
+ref_seq_Traes_1 = pd.read_csv("Data/CSv2.1_HC_vs_NCBI_besthit_pair.txt", sep="\t", header=None, usecols=[0, 3], names=["Traes_long","RefSeqID_long"])
+# ref_seq_Traes_1["Traes"]=ref_seq_Traes_1.apply(lambda row : row["Traes_long"][0:19], axis = 1)
+ref_seq_Traes_2 = pd.read_csv("Data/CSv2.1_LC_vs_NCBI_besthit_pair.txt", sep="\t", header=None, usecols=[0, 3], names=["Traes_long","RefSeqID_long"])
+# ref_seq_Traes_2["Traes"]=ref_seq_Traes_2.apply(lambda row : row["Traes_long"][0:21], axis = 1)
+ref_seq_Traes = pd.concat([ref_seq_Traes_1, ref_seq_Traes_2], ignore_index=True)
+# ref_seq_Traes = ref_seq_Traes.drop(["Traes_long"], axis=1)
+print(ref_seq_Traes)
+ref_seq_Traes = ref_seq_Traes.drop_duplicates(subset=['Traes_long'])
+ref_seq_Traes["RefSeqID"]=ref_seq_Traes.apply(lambda row : row["RefSeqID_long"][0:30], axis = 1)
+ref_seq_Traes = ref_seq_Traes.drop(["RefSeqID_long"], axis=1)
+print(ref_seq_Traes)
+
+ref_seq_Traes_EGI=ref_seq_Traes.merge(ref_seq_EGI, on=["RefSeqID"], how='left')
+ref_seq_Traes_EGI=ref_seq_Traes_EGI.fillna("NA")
+print(ref_seq_Traes_EGI)
+ref_seq_Traes_EGI.to_csv('Data/Traes_2_EGI.csv')
