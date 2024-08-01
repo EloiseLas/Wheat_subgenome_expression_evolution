@@ -1,6 +1,6 @@
 # Input data:
 
-All the necessary files are in the folder Input_data/
+All the necessary files are in [the folder Input_data/](https://drive.google.com/drive/folders/1LsE7yt3xHYaW_g1oPFcmcuxTNvNdO9M3?usp=sharing)
 1. The expression data in different files (one file for each condition) in the folder 4565.zip
 2. The homeologs list homoeolog_CSv2_ABD.list
 3. The files CSv2.1_HC_vs_NCBI_besthit_pair.txt and CSv2.1_LC_vs_NCBI_besthit_pair.txt to go from TraesID to RefSeqID
